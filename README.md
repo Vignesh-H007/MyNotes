@@ -25,10 +25,7 @@ A full-stack notes management web application built using Django and MySQL.
 - Search & Filters
 - UI Improvements(responsive to mobile)
 - AI Integration
-
-## Screenshots
-![Dashboard](All files/Download/dashboard.png)
-
+  
 ## Setup
 ```bash
 pip install -r requirements.txt
