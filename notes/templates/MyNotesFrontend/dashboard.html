@@ -1,0 +1,478 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | MyNotes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fffdf5;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #4b3621;
+            height: 4.375rem;
+        }
+
+        .body-container {
+            margin: 1.417rem 2.362rem;
+        }
+
+        .logo {
+            margin-left: 1.417rem;
+            font-size: 2rem;
+            color: #ffffff;
+            margin-right: 5.1875rem;
+        }
+
+        .badge {
+            background: #d2691e;
+        }
+
+        #logout {
+            background: #d2691e;
+            border-radius: 8px;
+            color: #ffffff;
+            border: none;
+            padding: 0.31rem 0.5rem;
+            margin-right: 1.417rem;
+            text-align: center;
+        }
+
+        .search-bar {
+            border: none;
+            border-radius: 20px;
+            background: #5d4a36;
+            padding: 4px 50px;
+            color: #ffffff;
+            width: 36.0625rem;
+            height: 2.6875rem;
+        }
+
+        .search-bar::placeholder {
+            color: #ffffff;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            text-align: left;
+        }
+
+        .title {
+            color: #4b3621;
+        }
+
+        .subtitle {
+            color: #d2691e;
+        }
+
+        .count {
+            font-weight: 800;
+        }
+
+        .page-header {
+            margin-left: 20px;
+            display: flex;
+        }
+
+        .toLeft {
+            width: 100%;
+        }
+
+        .toRight {
+            width: 15%;
+            margin-top: auto;
+        }
+
+        #create_notes_btn {
+            border-radius: 20px;
+            border: none;
+            background: #d2691e;
+            padding: 0.7rem;
+            text-align: center;
+            color: #ffffff;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #create_notes_btn:hover {
+            box-shadow: 0 0 7px rgb(255, 142, 61);
+            cursor: pointer;
+        }
+
+        .tabs {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border-bottom: 1px solid #d2691e;
+        }
+
+        #all,
+        #recent,
+        #favourite,
+        #subjects {
+            padding: 1rem;
+        }
+
+        #all {
+            border-bottom: solid #d2691e;
+        }
+
+        .tabs li button {
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: #5d4a36;
+        }
+
+        .card {
+            width: 22.441rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px hsl(0, 0%, 60%);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            background: #d2691e;
+            border: none;
+        }
+
+        #message {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            color: rgb(228, 188, 159);
+            font-size: 1.5rem;
+            font-style: italic;
+            letter-spacing: 0.3px;
+        }
+
+        .view-btn,
+        .edit-btn,
+        .delete-btn {
+            margin-right: 2rem;
+            border: none;
+            border-radius: 20px;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            background: #d2691e;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        #subjectsFilter {
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <p class="badge"><i class="bi bi-book-half"></i></p> MyNotes
+        </div>
+        <input type="text" class="search-bar" id="search" placeholder="Search notes here">
+        <button id="logout"><i class="bi bi-box-arrow-right"></i></button>
+    </header>
+    <div class="body-container">
+        <div class="page-header">
+            <div class="toLeft">
+                <h1 class="title">Notes Summary</h1>
+                <p class="subtitle">You Have <span class="count" id="count">0 active notes</span> this semester</p>
+            </div>
+            <div class="toRight">
+                <button type="button" id="create_notes_btn">+ Create New Note</button>
+            </div>
+        </div>
+        <div class="filter-tabs">
+            <ul class="tabs">
+                <li id="all"><button id="allBtn"><i class="bi bi-file-earmark-fill"></i> All Notes</button></li>
+                <li id="recent"><button id="recentBtn"><i class="bi bi-clock-fill"></i> Recent</button></li>
+                <li id="favourite"><button id="fBtn"><i class="bi bi-star-fill"></i> Favourites</button></li>
+                <li id="subjects"><button id="subjBtn"><i class="bi bi-archive-fill"></i> <select id="subjectsFilter">
+                            <option value="Subject">Subject</option>
+                            <option value="General">General</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Science">Science</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Literature">Literature</option>
+                            <option value="Computer">Computer Science</option>
+                        </select></button></li>
+            </ul>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row g-3" id="row">
+            </div>
+        </div>
+        <p id="message"></p>
+    </div>
+</body>
+<!--Django template to convert data(python) to json-->
+{{ data|json_script:"notes-json-data"}}
+<script>
+    const all_tab = document.getElementById("all");
+    const recent_tab = document.getElementById("recent");
+    const favorite_tab = document.getElementById("favourite");
+    const subject_tab = document.getElementById("subjects");
+    const subjectSelector = document.getElementById("subjectsFilter");
+    const add_btn = document.getElementById("create_notes_btn");
+    const count = document.getElementById("count");
+    const row = document.getElementById("row");
+    const message = document.getElementById("message");
+    const logout = document.getElementById("logout");
+    const searchBar = document.getElementById("search");
+    //Load Notes from backend(Django)
+    let existingData = [];
+    const noteData = document.getElementById("notes-json-data");
+    existingData = JSON.parse(noteData.textContent);
+    let currentArray = existingData;
+
+    const card = document.getElementsByClassName("card");
+    let cardDiv;
+    let viewBtn;
+
+    let counter = 0;
+    const tabs = [all_tab, recent_tab, favorite_tab, subject_tab];
+
+    logout.addEventListener("click", () => {
+        window.location.href = "/logout/";
+    });
+
+    function activateTab(activetab) {
+        tabs.forEach(tab => {
+            tab.style.borderBottom = "none";
+        });
+
+        activetab.style.borderBottom = "solid #d2691e";
+    }
+
+    tabs.forEach(tab => {
+        tab.onclick = function () {
+            activateTab(tab);
+        };
+    });
+
+    add_btn.addEventListener("click", () => {
+        window.location.href = "/create/";
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (existingData.length == 0) {
+            message.textContent = "No notes added yet.Click create notes button to add a new note";
+            count.textContent = "0 active notes";
+        }
+        else {
+            message.textContent = "";
+            count.textContent = `${existingData.length} active notes`;
+            renderNotes(existingData);
+        }
+
+        all_tab.addEventListener("click", () => {
+            window.location.href = "/dashboard/";
+        });
+        //Filter by recent notes
+        recent_tab.addEventListener("click", () => {
+            const elements = document.querySelectorAll('.card');
+
+            elements.forEach(note => {
+                note.remove();
+            });
+
+            const recentNotes = existingData.toSorted((a, b) => {
+                return new Date(b.lastEditedAt) - new Date(a.lastEditedAt);
+            });
+
+            currentArray = recentNotes;
+            row.innerHTML = "";
+            if (recentNotes.length > 0) {
+                message.textContent = "";
+                renderNotes(recentNotes);
+            }
+            else {
+                message.textContent = "No Recent Notes found";
+            }
+        });
+        //Filter by favourite note
+        favorite_tab.addEventListener("click", () => {
+
+            const elements = document.querySelectorAll(".card");
+
+            elements.forEach(element => {
+                element.remove();
+            });
+
+            const favouriteNotes = existingData.filter(note => note.isFavourite);
+            currentArray = favouriteNotes;
+
+            if (favouriteNotes.length > 0) {
+                message.textContent = "";
+                row.innerHTML = "";
+                renderNotes(favouriteNotes);
+            }
+            else {
+                message.textContent = "No Favourites Note found";
+            }
+        });
+        //Filter by subjects
+        subject_tab.addEventListener("click", () => {
+            const elements = document.querySelectorAll('.card');
+
+            elements.forEach(element => element.remove());
+            const selectedSubject = subjectSelector.value;
+
+            const subjectNotes = existingData.filter(note => note.subjectKey == selectedSubject);
+            row.innerHTML = "";
+            currentArray = subjectNotes;
+            if (subjectNotes.length > 0) {
+                message.textContent = "";
+                renderNotes(subjectNotes);
+            }
+            else {
+                message.textContent = `No notes on the subject ${selectedSubject}`;
+            }
+        });
+        //Handle searching
+        searchBar.addEventListener("input", (e) => {
+            const elements = document.querySelectorAll('.card');
+            elements.forEach(element => element.remove());
+            const query = e.target.value.toLowerCase();
+
+            const searchedNotes = currentArray.filter(note =>
+                note.title.toLowerCase().includes(query)
+            );
+            row.innerHTML = "";
+            if (searchedNotes.length > 0) {
+                message.textContent = "";
+                renderNotes(searchedNotes);
+            }
+            else {
+                message.textContent = "No matching notes found";
+            }
+        });
+
+        row.addEventListener('click', async (e) => {
+            const editButton = e.target.closest('.edit-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
+            if (editButton) {
+                const noteCard = editButton.closest('.card');
+                if (!noteCard) return;
+                const noteId = noteCard.dataset.id;
+                localStorage.setItem('activeNotesID', noteId);
+                window.location.href = `/edit/${noteId}/`;
+                return;
+            }
+            else if (deleteBtn) {
+                const noteCard = deleteBtn.closest('.card');
+                if (!noteCard) return;
+                const noteId = noteCard.dataset.id;
+                const result = confirm("Do you want to delete this note ?");
+                if (result) {
+                    const csrftoken = get_cookie("csrftoken");
+                    const response = await fetch(`/delete/${noteId}/`, {
+                        method: "DELETE",
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+
+                    if (response.ok) {
+                        window.location.href = "/dashboard/";
+                    } else {
+                        alert('Failed To Delete this Note');
+                    }
+                }
+                return;
+            }
+
+            const noteCard = e.target.closest('.card');
+            if (!noteCard) return;
+            const noteId = noteCard.dataset.id;
+            console.log(noteId);
+            window.location.href = `/view/${noteId}/`;
+        });
+    });
+
+    function renderNotes(notesArray) {
+        notesArray.forEach(note => {
+            const columnDiv = document.createElement("div");
+            columnDiv.classList.add("col-3");
+
+            cardDiv = document.createElement("div");
+            cardDiv.classList.add("card");
+            cardDiv.dataset.id = note.id;
+            console.log(note.id);
+
+            const cardBody = document.createElement("div");
+            cardBody.classList.add("card-body");
+
+            const cardImg = document.createElement("img");
+            cardImg.classList.add("card-img-top");
+            cardImg.src = `/static/Computer.png`;
+
+            const cardTitle = document.createElement("p");
+            cardTitle.classList.add("badge", "text-bg-primary");
+            cardTitle.textContent = `${note.subject_key}`;
+
+
+            const cardSubTitle = document.createElement("h3");
+            cardSubTitle.classList.add("card-title");
+            cardSubTitle.textContent = `${note.title}`;
+
+            const cardText = document.createElement("p");
+            cardText.classList.add("card-text");
+            cardText.textContent = `${note.created_at}`;
+
+
+            viewBtn = document.createElement("button");
+            viewBtn.classList.add("view-btn");
+            viewBtn.textContent = "view";
+
+            const editBtn = document.createElement("button");
+            editBtn.classList.add("edit-btn");
+            editBtn.textContent = "Edit";
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.textContent = "Delete";
+
+            row.appendChild(columnDiv);
+            columnDiv.appendChild(cardDiv);
+            cardDiv.append(cardImg, cardBody);
+            cardBody.append(cardTitle, cardSubTitle, cardText, viewBtn, editBtn, deleteBtn);
+        });
+    }
+
+    function get_cookie(name) {
+        let cookie_value = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookie_value;
+    }
+</script>
+
+</html>

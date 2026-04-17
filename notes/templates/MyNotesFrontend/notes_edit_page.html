@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Notes | MyNotes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fffdf5;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #4b3621;
+            padding: 11px;
+            height: 70px;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            margin: 0 15px;
+            color: #ffffff;
+        }
+
+        .badge {
+            background: #d2691e;
+        }
+
+        .logoutBtn {
+            background: #d2691e;
+            padding: 2px 14px;
+            border-radius: 20px;
+            color: #ffffff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .logoutBtn:hover {
+            box-shadow: 0 2px 12px #ff9b54;
+            color: #ffffff;
+        }
+
+        .title_input_container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #4b3621;
+            width: 17rem;
+            height: 9rem;
+            text-align: center;
+            margin-left: auto;
+            border-radius: 18px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.11);
+        }
+
+        .title_input_container input {
+            background: #5d4a36;
+            color: #ffffff;
+            border: none;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .title_input_container input::placeholder {
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .title_input_container select {
+            background: #5d4a36;
+            border-radius: 0.5rem;
+            color: #ffffff;
+        }
+
+        .title_input_container label {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .title_input_container option {
+            color: #d2691e;
+            background: #ffffff;
+        }
+
+        .container-fluid {
+            display: flex;
+        }
+
+        .toLeft {
+            width: 70%;
+        }
+
+        .toRight {
+            width: 30%;
+        }
+
+        .notes_content_container textarea {
+            resize: none;
+            border: 2px solid #4b3621;
+            border-radius: 1rem;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.11);
+            padding-left: 0.5rem;
+            margin-left: 2rem;
+            width: 75.9375rem;
+            height: 40.5rem;
+        }
+
+        .notes_content_container textarea::placeholder {
+            color: #4b3621;
+            opacity: 0.5;
+            padding: 0.25rem;
+        }
+
+        .file_upload_container {
+            background: #ffffff;
+            width: 17rem;
+            height: 21rem;
+            margin-left: auto;
+            margin-top: 1rem;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.11);
+            border-radius: 0.5rem;
+            padding: 1.875rem 0.5rem;
+        }
+
+        .file_upload_container input {
+            display: none;
+        }
+
+        .file_upload_container label {
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            color: #4b3621;
+            border: 2px dashed rgb(93, 74, 54, 0.6);
+            border-radius: 0.5rem;
+            height: 9.375rem;
+        }
+
+        .file_upload_container label i {
+            font-size: 2rem;
+            opacity: 0.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-name {
+            text-align: center;
+            margin: 2rem 0 0 0;
+            color: #d2691e;
+        }
+
+        .action-buttons {
+            background: #4b3621;
+            width: 17rem;
+            height: 4rem;
+            border-radius: 20px;
+            justify-content: space-evenly;
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            margin-left: auto;
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            color: #ffffff;
+        }
+
+        #save,
+        #cancel {
+            background: #d2691e;
+            border-radius: 20px;
+        }
+
+        #save:hover {
+            background: #5cb85c;
+            color: #ffffff;
+        }
+
+        #cancel:hover {
+            background: #800020;
+            color: #ffffff;
+        }
+
+        .noteInfo {
+            display: flex;
+            text-align: center;
+            background: #5d4a36;
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 0 0.8rem;
+        }
+
+        .noteInfo #editedDateContainer {
+            margin-left: 50px;
+        }
+
+        .noteInfo p {
+            margin-top: 0.7rem;
+        }
+
+        .favouriteNote {
+            margin-left: 3rem;
+            color: #5d4a36;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <p class="badge"><i class="bi bi-book-half"></i></p> MyNotes
+        </div>
+        <div class="noteInfo">
+            <p>Created At : <span id="createdDate"></span></p>
+            <p id="editedDateContainer">Last Edited at : <span id="lastEditedDate"></span></p>
+        </div>
+        <div class="options"><button class="logoutBtn" id="logout">Logout</button></div>
+    </header>
+    <div class="favouriteNote">
+        <input type="checkbox" id="favouriteInput" class="form-check-input">
+        <label for="favouiteInput" class="form-check-label">Mark as favourite Note</label>
+    </div>
+    <div class="container-fluid">
+        <div class="toLeft">
+            <div class="notes_content_container">
+                <textarea placeholder="Your notes goes here...." id="textArea" contenteditable="true"></textarea>
+            </div>
+        </div>
+        <div class="toRight">
+            <div class="title_input_container">
+                <input type="text" required placeholder="Enter your notes title here" id="notesTitle">
+                <label for="subjects">Select Subject</label>
+                <select id="subjects">
+                    <option value="null">No subject chosen</option>
+                    <option value="General">General</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="Social studies">Social Studies</option>
+                    <option value="Literature">Literature</option>
+                    <option value="Computer">Computer Science</option>
+                </select>
+            </div>
+            <div class="file_upload_container">
+                <input type="file" id="file">
+                <label for="file">
+                    <p class="upload-logo"><i class="bi bi-upload"></i></p>
+                    Upload Reference materials here.
+                </label>
+                <p class="file-name" id="fileName">No file chosen</p>
+            </div>
+            <div class="action-buttons">
+                <button id="cancel" class="btn">Cancel</button>
+                <button id="save" class="btn" type="submit">Save Note</button>
+            </div>
+        </div>
+    </div>
+    {{ data|json_script:"notes-data" }}
+    {{ noteid|json_script:"notes-id" }}
+    <script>
+        const notesTitle = document.getElementById("notesTitle");
+        const subject = document.getElementById("subjects");
+        const notesContent = document.getElementById("textArea");
+        const fileInput = document.getElementById("file");
+        const fileName = document.getElementById("fileName");
+        const createdDate = document.getElementById('createdDate');
+        const lastEditedDate = document.getElementById('lastEditedDate');
+        const cancelBtn = document.getElementById("cancel");
+        const saveBtn = document.getElementById("save");
+        const message = document.getElementById("message");
+        const favouriteInput = document.getElementById("favouriteInput");
+        const logoutBtn = document.getElementById("logout");
+        let filesName;
+        //load data from backend
+        let existingData = [];
+        const notesdata = document.getElementById("notes-data");
+        existingData = JSON.parse(notesdata.textContent);
+        let noteId;
+        const notesId = document.getElementById("notes-id");
+        noteId = JSON.parse(notesId.textContent);
+
+        fileInput.addEventListener("change", function () {
+            filesName = this.files[0];
+            fileName.textContent = `${filesName.name}`;
+        });
+
+        logoutBtn.addEventListener("click", () => {
+            window.location.href = "/logout/";
+        });
+
+        cancelBtn.addEventListener("click", () => {
+            let result = confirm("Do you want to cancel?");
+            if (result) {
+                window.location.href = "/dashboard/";
+            }
+        })
+
+        saveBtn.addEventListener("click", async () => {
+            if (notesTitle.value == "")
+                alert("Title Field is empty");
+            else if (notesContent.value == "")
+                alert("Notes Field is empty");
+            else {
+                const csrftoken = get_cookie("csrftoken");
+                const response = await fetch(`/edit/${noteId}/`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify({
+                        title: notesTitle.value,
+                        content: notesContent.value,
+                        subject_key: subject.value,
+                        is_favourite: favouriteInput.checked,
+                        updated_at: new Date().toISOString()
+                    })
+                })
+
+                if (response.ok) {
+                    window.location.href = "/dashboard/";
+                }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (existingData.length > 0) {
+                const note = existingData[0];
+                notesTitle.value = note.title;
+                notesContent.value = note.content;
+                subject.value = note.subject_key;
+                fileName.textContent = note.attachment_name == '' ? "No attachment added" : note.attachmentName;
+                createdDate.textContent = `${note.created_at}`;
+                lastEditedDate.textContent = `${note.updated_at}`;
+                favouriteInput.checked = note.is_favourite;
+            }
+        });
+
+        function get_cookie(name) {
+            let cookie_value = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookie_value;
+        }
+    </script>
+</body>
+
+</html>

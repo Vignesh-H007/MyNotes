@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Your Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fffdf5;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            background: #4b3621;
+            height: 4.375rem;
+            max-width: 100%;
+        }
+
+        .logo {
+            margin-left: 1.417rem;
+            font-size: 2rem;
+            color: #ffffff;
+            width: 85%;
+        }
+
+        .badge {
+            background: #d2691e;
+        }
+
+        #logout {
+            background: #d2691e;
+            border-radius: 8px;
+            color: #ffffff;
+            border: none;
+            padding: 0.31rem 0.5rem;
+            margin-right: 1.417rem;
+            text-align: center;
+        }
+
+        #editBtn {
+            background: #d2691e;
+            border-radius: 8px;
+            color: #ffffff;
+            border: none;
+            padding: 0.31rem 0.5rem;
+            margin-right: 1.417rem;
+            text-align: center;
+            width: 10%;
+        }
+
+        .noteDirection,
+        .noteDirection a {
+            color: #d2691e;
+        }
+
+        .noteTitle {
+            color: #4b3621;
+        }
+
+        .viewContainer {
+            margin: 1.417rem 2.362rem;
+        }
+
+        .parent-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 100%;
+        }
+
+        .toLeft {
+            width: 80%;
+        }
+
+        .toRight {
+            width: 20%;
+        }
+
+        .contentCard {
+            width: 70rem;
+            height: 40.5rem;
+            background: #ffffff;
+            padding: 1rem;
+            border: 2px solid #4b3621;
+            border-radius: 20px;
+        }
+
+        .pomodoroCard {
+            background: #ffffff;
+            width: 100%;
+            height: 70%;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #4b3621;
+        }
+
+        .timer-container {
+            font-size: 2.5rem;
+            border: 2px solid #4b3621;
+            border-radius: 50%;
+            padding: 1.5rem;
+            width: 10rem;
+            height: 10rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timer-container p {
+            margin-top: 1.5rem;
+            font-weight: 700;
+        }
+
+        .mode{
+            outline: none;
+            border: none;
+            color: #d2691e;
+            padding: 1rem;
+            opacity: 0.6;
+        }
+
+        .button-container {
+            flex-direction: row;
+        }
+
+        .button-container button {
+            justify-content: space-evenly;
+            margin: 0.5rem;
+            border: 2px solid #4b3621;
+            border-radius: 50%;
+            font-size: 1.7rem;
+            background: transparent;
+            height: 3rem;
+            width: 3rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .button-container button:hover {
+            transform: scale(1.05);
+        }
+
+        .attachmentContainer {
+            background: #4b3621;
+            width: 100%;
+            height: 20%;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            color: #ffffff;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .noteInfo {
+            display: flex;
+        }
+
+        .noteInfo #editedDateContainer {
+            margin-left: 50px;
+        }
+
+        #isFavourite {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <p class="badge"><i class="bi bi-book-half"></i></p> MyNotes
+        </div>
+        <button id="editBtn">Edit Note</button>
+        <button id="logout"><i class="bi bi-box-arrow-right"></i></button>
+    </header>
+    <div class="viewContainer">
+        <div class="viewHeader">
+            <p class="noteDirection"><i class="bi bi-house-fill"></i> <a href="/dashboard/">Dashboard</a> / <span
+                    id="subject">subject</span></p>
+            <div class="noteTitle">
+                <h1 id="noteTitle">Notes Title</h3>
+                    <p id="isFavourite"><i class="bi bi-star-fill"></i> Favourite</p>
+                    <div class="noteInfo">
+                        <p>Created At : <span id="createdDate"></span></p>
+                        <p id="editedDateContainer">Last Edited at : <span id="lastEditedDate"></span></p>
+                    </div>
+            </div>
+        </div>
+        <div class="parent-container">
+            <div class="toLeft">
+                <div class="contentCard">
+                    <p class="content" id="content">Notes content</p>
+                </div>
+            </div>
+            <div class="toRight">
+                <div class="pomodoroCard">
+                    <div class="timer-container">
+                        <p id="timer">25:00
+                        <p>
+                    </div>
+                    <p id="mode" class="mode">Study Time
+                    </p>
+                    <div class="button-container">
+                        <button id="pauseBtn"><i class="bi bi-pause-fill"></i></button>
+                        <button id="startBtn"><i class="bi bi-play-fill"></i></button>
+                        <button id="resetBtn"><i class="bi bi-arrow-clockwise"></i></button>
+                    </div>
+                </div>
+                <div class="attachmentContainer">
+                    <span id="filename">No file attachment added</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{data|json_script:"notes-data"}}
+    <script>
+        // console.log("script started");
+        // console.log("notes-data element:", document.getElementById("notes-data"));
+        const notesTitle = document.getElementById("noteTitle");
+        const createdDate = document.getElementById("createdDate");
+        const content = document.getElementById("content");
+        const subject = document.getElementById("subject");
+        const fileName = document.getElementById("filename");
+        const editedDate = document.getElementById("lastEditedDate");
+        const start = document.getElementById("startBtn");
+        const pause = document.getElementById("pauseBtn");
+        const reset = document.getElementById("resetBtn");
+        const timer = document.getElementById("timer");
+        const editBtn = document.getElementById("editBtn");
+        const isFavourite = document.getElementById("isFavourite");
+        const logoutBtn = document.getElementById("logout");
+        const mode = document.getElementById("mode");
+        let isRunning = false;
+        let isWorkPhase = true;
+        let timeLeft = 1500;
+        let countDown;
+
+        const work_time = 1500;
+        const rest_time = 300;
+        const selecttag = document.getElementById("selecttag");
+        
+        const note_data = document.getElementById("notes-data");
+        const note = JSON.parse(note_data.textContent);
+
+        subject.textContent = note.subject_key;
+        notesTitle.textContent = note.title;
+        content.textContent = note.content;
+        createdDate.textContent = note.created_at;
+        editedDate.textContent = note.updated_at;
+
+        logoutBtn.addEventListener("click", () => {
+            window.location.href = "/logout/";
+        });
+
+        start.addEventListener("click", () => {
+            clearInterval(countDown);
+            startTimer();
+            isRunning = true;
+        });
+
+        pause.addEventListener("click", () => {
+            if (isRunning) {
+                clearInterval(countDown);
+                isRunning = false;
+            }
+            else {
+                startTimer();
+                isRunning = true;
+            }
+        });
+
+        reset.addEventListener("click", () => {
+            clearInterval(countDown);
+            isWorkPhase = true;
+            timeLeft = work_time;
+            mode.textContent = "Study Time";
+            updateDisplay();
+            isRunning = false;
+        });
+
+        function updateDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+
+            const displayString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timer.textContent = displayString;
+        };
+
+        function startTimer() {
+            countDown = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                }
+                else {
+                    clearInterval(countDown);
+                    switchphase();
+                }
+            }, 1000);
+        };
+
+        function switchphase(){
+            isWorkPhase = !isWorkPhase;
+
+            if(isWorkPhase){
+                timeLeft = work_time;
+                mode.textContent = "Study Time";
+            } else {
+                timeLeft = rest_time;
+                mode.textContent = "Break Time";
+            }
+            updateDisplay();
+            startTimer();
+        }
+
+        editBtn.addEventListener("click", () => {
+            window.location.href = `/edit/${note.id}/`;
+        });
+    </script>
+</body>
+
+</html>
