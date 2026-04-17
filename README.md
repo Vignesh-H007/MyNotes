@@ -3,11 +3,12 @@
 A full-stack notes management web application built using Django and MySQL.
 
 ## Features
-- User Authentication (Signup/Login)
-- Create Notes
-- Dynamic Dashboard
-- Soft Delete (is_deleted)
-- Secure session handling
+* User Authentication (Signup/Login)
+* Create, Edit, Delete Notes (Soft Delete)
+* View Notes
+* Dynamic Dashboard with filters
+* Pomodoro Timer with phase switching
+* Secure session handling
 
 ## Tech Stack
 - Backend: Django
@@ -21,10 +22,12 @@ A full-stack notes management web application built using Django and MySQL.
 - Model ↔ Database synchronization 
 
 ## Future Improvements (V2)
-- Edit/Delete Notes
 - Search & Filters
-- UI Improvements
+- UI Improvements(responsive to mobile)
 - AI Integration
+
+## Screenshots
+![Dashboard](Download/dashboard.png)
 
 ## Setup
 ```bash
